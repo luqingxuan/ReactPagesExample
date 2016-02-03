@@ -1,16 +1,27 @@
 import React from 'react';
 
+import Pager from '../components/Pager.js';
+
 export default class App extends React.Component {
     constructor() {
-        super();
-        this.state = {};
+        
+    	super();
+        
+        this.state = {
+    		totalRecords:300,
+    		visiblePages:5
+        };
+    }
+    
+    onPage(pageNo,pageSize,event){
+    	alert(pageNo)
     }
     
     render() {
         return (
 
         	<div>
-				test
+				<Pager onPage={this.onPage} totalRecords={this.state.totalRecords} visiblePages={this.state.visiblePages}></Pager>
 			</div>
 
         );

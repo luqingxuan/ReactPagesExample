@@ -1,158 +1,175 @@
-<template>
-	<div v-show="totalRecords > 0" class="pagination-bar clearfix">
-		<div class="pull-left pagination-summary">
-			第 {{startRecord}}到 {{endRecord}} 条，共 {{totalRecords}} 条记录
-		</div>
-		<ul class="pull-right pagination">
-			<li :class="{first:true,disabled:pageNo==1}">
-				<a href="javascript:void(0);" @click="page(1,$event)">&lt;&lt;</a>
-			</li>
-			<li :class="{prev:true,disabled:pageNo==1}">
-				<a href="javascript:void(0);" @click="page(pageNo-1,$event)">&lt;</a>
-			</li>
-			<li v-for="index in (endPage-startPage+1)" :class="{page:true,active:pageNo==(startPage+index)}">
-				<a href="javascript:void(0);" @click="page(startPage+index,$event)">{{startPage+index}}</a>
-			</li>
-			<li :class="{next:true,disabled:pageNo==totalPages}">
-				<a href="javascript:void(0);" @click="page(pageNo+1,$event)">&gt;</a>
-			</li>
-			<li :class="{last:true,disabled:pageNo==totalPages}">
-				<a href="javascript:void(0);" @click="page(totalPages,$event)">&gt;&gt;</a>
-			</li>
-		</ul>
-	</div>
-</template>
+import React from 'react';
 
-<script>
+require('./Pager.less');
 
-	module.exports = {
-	    name: 'Pager',
-	    replace : true,
-		props : {
-			"pageNo":{//页码
-				type:Number,
-				default:1
-			}, 
-			"pageSize":{//分页大小
-				type:Number,
-				default:10
-			},  
-			"totalRecords":{//总共记录数
-				type:Number,
-				default:0
-			}, 
-			"visiblePages":{//显示页码数
-				type:Number,
-				default:5
-			},
-			"pageChange":{//分页回调
-				type:Function,
-				default:function(evt,pageNo){}
-			} 
-		},
-		data : function() {
-			return {
-			};
-		},
-		computed : {
-			// 计算出来总共多少页
-			totalPages : function() {
+// es6属性propTypes/defaultProps不能写在class内,class.defaultProps={}
+// es6属性propTypes/defaultProps 可以标识static定义在class内，也可以定义在class外)
+export default class Pager extends React.Component {
 	
-				var totalPages = this.totalRecords
-						/ this.pageSize;
-	
-				if (this.totalRecords % this.pageSize != 0)
-					totalPages = parseInt(totalPages) + 1;
-	
-				return totalPages;
-			},
-			// 渲染页码开始号
-			startPage : function() {
-	
-				if (this.totalPages < this.visiblePages)
-					return 1;
-	
-				var half = this.visiblePages / 2;
-				if (this.visiblePages % 2 != 0)
-					half = parseInt(half);
-	
-				// 页码显示范围
-				var range = [ this.pageNo - half,
-						this.pageNo + half ];
-	
-				var delta = range[0] > 0 ? 0 : 1 - range[0];
-	
-				range[0] = range[0] + delta;
-	
-				range[1] = range[1] + delta;
-	
-				if (range[1] > this.totalPages)
-					range[0] = range[0]
-							- (range[1] - this.totalPages);
-	
-				return Math.max(range[0], 1);
-	
-			},
-			// 渲染页码结束号
-			endPage : function() {
-	
-				if (this.totalPages < this.visiblePages)
-					return this.totalPages;
-	
-				var half = this.visiblePages / 2;
-				if (this.visiblePages % 2 != 0)
-					half = parseInt(half);
-	
-				// 页码显示范围
-				var range = [ this.pageNo - half,
-						this.pageNo + half ];
-	
-				var delta = range[0] > 0 ? 0 : 1 - range[0];
-	
-				range[1] = range[1] + delta;
-	
-				return Math.min(range[1], this.totalPages);
-			},
-			// 显示记录开始号
-			startRecord : function() {
-	
-				return (this.pageNo - 1) * this.pageSize + 1;
-			},
-			// 显示记录结束号
-			endRecord : function() {
-	
-				return Math.min(this.pageNo * this.pageSize,
-						this.totalRecords);
-			}
-		},
-		methods : {
-			page : function(page, event) {
-	
-				// 禁用
-				if (/disabled/
-						.test(event.target.parentNode.className))
-					return;
-	
-				this.pageNo = page;
-
-				this.$dispatch('page', page);
-
-				this.pageChange.call(this, event,page);
-			}
-		}
-	};
-</script>
-
-<style lang="less">
-	.pagination-bar {
-		margin: 15px 0;
+	constructor(props) {
+	    
+		super(props);
+	    
+	    this.state = {
+    		pageNo:props.pageNo || 1,
+    		pageSize:props.pageSize || 1,
+    		totalRecords:props.totalRecords || 0,
+    		visiblePages:props.visiblePages || 5
+    	};
 	}
 
-	.pagination {
-		margin: 0;
+    // 计算出来总共多少页
+	getTotalPages() {
+
+		var totalPages = this.state.totalRecords
+				/ this.state.pageSize;
+
+		if (this.state.totalRecords % this.state.pageSize != 0)
+			totalPages = parseInt(totalPages) + 1;
+
+		return totalPages;
+	}
+    
+	// 渲染页码开始号
+	getStartPage() {
+
+		var totalPages=this.getTotalPages();
+		
+		if (totalPages < this.state.visiblePages)
+			return 1;
+
+		var half = this.state.visiblePages / 2;
+		if (this.state.visiblePages % 2 != 0)
+			half = parseInt(half);
+
+		// 页码显示范围
+		var range = [ this.state.pageNo - half,
+				this.state.pageNo + half ];
+
+		var delta = range[0] > 0 ? 0 : 1 - range[0];
+
+		range[0] = range[0] + delta;
+
+		range[1] = range[1] + delta;
+
+		if (range[1] > totalPages)
+			range[0] = range[0]
+					- (range[1] - totalPages);
+
+		return Math.max(range[0], 1);
+
 	}
 	
-	.pagination-summary {
-		margin: 7px 0 0;
+	// 渲染页码结束号
+	getEndPage() {
+		
+		var totalPages=this.getTotalPages();
+		
+		if (totalPages < this.state.visiblePages)
+			return totalPages;
+
+		var half = this.state.visiblePages / 2;
+		if (this.state.visiblePages % 2 != 0)
+			half = parseInt(half);
+		
+		// 页码显示范围
+		var range = [ this.state.pageNo - half,
+				this.state.pageNo + half ];
+
+		if (this.state.visiblePages % 2 == 0)
+			range[1]-=1;
+		
+		var delta = range[0] > 0 ? 0 : 1 - range[0];
+
+		range[1] = range[1] + delta;
+
+		return Math.min(range[1], totalPages);
 	}
-</style>
+	
+	// 显示记录开始号
+	getStartRecord() {
+
+		return (this.state.pageNo - 1) * this.state.pageSize + 1;
+	}
+	
+	// 显示记录结束号
+	getEndRecord() {
+
+		return Math.min(this.state.pageNo * this.state.pageSize,
+				this.state.totalRecords);
+	}
+	
+	page(pageNo,event) {
+		
+		// 禁用
+		// if (/disabled/
+		// .test(event.target.parentNode.className))
+		// return;
+
+		this.setState({pageNo:pageNo});
+
+		var onPage=this.props.onPage;
+		
+		if(onPage && typeof onPage =='function')
+			onPage.call(this,pageNo,this.state.pageSize,event);
+		
+		// this.$dispatch('page', page);
+
+		// this.pageChange.call(this, event,page);
+	}
+	
+    render() {
+
+    	var totalRecords=this.state.totalRecords;
+    	
+    	if(totalRecords < 1)
+    		return (<div></div>);
+
+    	var pageNo=this.state.pageNo;
+    	var pageSize=this.state.pageSize;
+    	var visiblePages=this.state.visiblePages;
+    	
+    	var totalPages=this.getTotalPages();
+    	var startPage=this.getStartPage();
+    	var endPage=this.getEndPage();
+    	var startRecord=this.getStartRecord();
+    	var endRecord=this.getEndRecord();
+
+    	var firstCls=pageNo==1 ? "first disabled" : "first";
+    	var prevCls=pageNo==1 ? "prev disabled" : "prev";
+    	
+    	var lastCls=pageNo==totalPages ? "last disabled" : "last";
+    	var nextCls=pageNo==totalPages ? "next disabled" : "next";
+    
+    	var items=[];
+    	for(var index=startPage;index<=endPage;index++)
+			items.push(<li key={index} className={index==pageNo ? "page active" : "page"}><a href="javascript:void(0);" onClick={this.page.bind(this,index)}>{index}</a></li>);
+    	
+        return (
+
+    		<div className="pagination-bar clearfix">
+        		<div className="pull-left pagination-summary">
+        			第 {startRecord}到 {endRecord} 条，共 {totalRecords} 条记录
+        		</div>
+        		<ul className="pull-right pagination">
+        			<li className={firstCls}>
+        				<a href="javascript:void(0);" onClick={this.page.bind(this,1)}>&lt;&lt;</a>
+        			</li>
+        			<li className={prevCls}>
+        				<a href="javascript:void(0);" onClick={this.page.bind(this,pageNo-1)}>&lt;</a>
+        			</li>
+        			
+        			{items}
+        			
+        			<li className={nextCls}>
+        				<a href="javascript:void(0);" onClick={this.page.bind(this,pageNo+1)}>&gt;</a>
+        			</li>
+        			<li className={lastCls}>
+        				<a href="javascript:void(0);" onClick={this.page.bind(this,totalPages)}>&gt;&gt;</a>
+        			</li>
+        		</ul>
+        	</div>
+       	);
+   	}
+};
+
