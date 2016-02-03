@@ -159,6 +159,9 @@ if (process.env.NODE_ENV === 'production') {
 					NODE_ENV : '"production"'
 				}
 			}), new webpack.optimize.UglifyJsPlugin({
+				mangle : {
+					except : [ 'import', '$', 'export' ]
+				},
 				compress : {
 					warnings : false
 				}
