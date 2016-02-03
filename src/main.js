@@ -1,8 +1,9 @@
-import React from 'react';
+import React from 'react'
+import { render } from 'react-dom'
 
+// First we import some modules...
+import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 
+import routes from './router/router.js'
 
-//require('./router/router');
-
-//require('./pages/dev/Layout.jsx');
-
+render(<Router history={browserHistory} routes={routes} />, document.getElementById("app"))

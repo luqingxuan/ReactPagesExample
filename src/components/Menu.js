@@ -13,34 +13,39 @@ export default class Menu extends React.Component {
 
         	<div id="g_menu" className='pull-left g-menu'>
 				<div className='g-container clearfix'>
+			
+					<div className="menu-toggle">
+						<i className="fa fa-bars"></i>
+					</div>
+					
 					<ul className="list-unstyled clearfix">
 						<li className="pull-left menu-item">
-							<a href="/dev/app/overview">
+							<a href="{path:'/dev/index'}">
 								<span className="fa fa-home"></span>首&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;页
 							</a>
 						</li>
 						<li className="pull-left menu-item">
 							<a href="/dev/app/create">
-								<span className="glyphicon glyphicon-home"></span>AAA
+								<span className="fa fa-home"></span>AAA
 							</a>
 						</li>
 						<li className="pull-left menu-item">
 							<a href="/dev/app/update">
-								<span className="glyphicon glyphicon-home"></span>BBB
+								<span className="fa fa-legal"></span>BBB
 							</a>
 						</li>
 						<li className="pull-left menu-item">
 							<a href="/dev/app/search">
-								<span className="glyphicon glyphicon-home"></span>CCC
+								<span className="fa fa-eye"></span>CCC
 							</a>
 						</li>
 						<li className="pull-left menu-item">
 							<a href="/dev/a">
-								<span className="glyphicon glyphicon-home"></span>DDD
+								<span className="fa fa-gears"></span>DDD
 							</a>
 						</li><li className="pull-left menu-item">
 							<a href="/dev/b">
-								<span className="glyphicon glyphicon-home"></span>EEE
+								<span className="fa fa-paw"></span>EEE
 							</a>
 						</li>
 					</ul>
