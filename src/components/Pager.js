@@ -169,24 +169,24 @@ export default class Pager extends React.Component {
 
     	var items=[];
     	
-    	//first
-    	items.push({text:"<<",cls:pageNo==1 ? "first disabled" : "first",key:"first",pageNo:1});
+    	// first
+    	items.push({text:"<<",cls:pageNo==1 ? "first disabled" : "first",pageNo:1});
     	
-    	//prev
-    	items.push({text:"<",cls:pageNo==1 ? "prev disabled" : "prev",key:"prev",pageNo:pageNo-1});
+    	// prev
+    	items.push({text:"<",cls:pageNo==1 ? "prev disabled" : "prev",pageNo:pageNo-1});
     	
     	for(var index=startPage;index<=endPage;index++)
-    		items.push({cls:index==pageNo ? "page active" : "page",pageNo:index,key:index});
+    		items.push({text:index,cls:index==pageNo ? "page active" : "page",pageNo:index});
    
-    	//next
-    	items.push({text:">>",cls:pageNo==totalPages ? "next disabled" : "next",key:"next",pageNo:pageNo+1});
+    	// next
+    	items.push({text:">>",cls:pageNo==totalPages ? "next disabled" : "next",pageNo:pageNo+1});
     	
-    	//last
-    	items.push({text:">",cls:pageNo==totalPages ? "last disabled" : "last",key:"last",pageNo:totalPages});
+    	// last
+    	items.push({text:">",cls:pageNo==totalPages ? "last disabled" : "last",pageNo:totalPages});
     	
     	var itemNodes = items.map(function(item) {
             return (
-            		<PagerItem key={item.key} cls={item.cls} onPage={this.handlePage} pageNo={item.pageNo} text={item.text}></PagerItem>
+            		<PagerItem key={item.text} cls={item.cls} onPage={this.handlePage} pageNo={item.pageNo} text={item.text}></PagerItem>
             );
         },this);
     	
