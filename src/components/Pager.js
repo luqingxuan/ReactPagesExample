@@ -2,6 +2,44 @@ import React from 'react';
 
 require('./Pager.less');
 
+class PagerItem extends React.Component{
+	
+	constructor(props) {
+	    
+		super(props);
+	
+	    // ES6写法要bind
+	    this.handleClick=this.handleClick.bind(this);
+	}
+	
+	handleClick(e){
+
+		if(/disabled/.test(e.target.parentNode.className))
+			return;
+	
+		// 字符串
+		var pageNo=parseInt(this.props.pageNo);
+	
+		var onPage=this.props.onPage;
+		
+		onPage && typeof onPage=='function' && onPage.call(this,pageNo,e);
+	}
+	
+	render(){
+
+		var cls=this.props.cls;
+
+		var text=this.props.text || this.props.pageNo;
+
+		return (
+			<li className={cls}>
+				<a href="javascript:void(0);" onClick={this.handleClick}>{text}</a>
+			</li>
+       	);
+		
+	}
+}
+
 // es6属性propTypes/defaultProps不能写在class内,class.defaultProps={}
 // es6属性propTypes/defaultProps 可以标识static定义在class内，也可以定义在class外)
 export default class Pager extends React.Component {
@@ -12,10 +50,13 @@ export default class Pager extends React.Component {
 	    
 	    this.state = {
     		pageNo:props.pageNo || 1,
-    		pageSize:props.pageSize || 1,
+    		pageSize:props.pageSize || 10,
     		totalRecords:props.totalRecords || 0,
     		visiblePages:props.visiblePages || 5
     	};
+	    
+	    // ES6写法要bind
+	    this.handlePage=this.handlePage.bind(this);
 	}
 
     // 计算出来总共多少页
@@ -99,12 +140,7 @@ export default class Pager extends React.Component {
 				this.state.totalRecords);
 	}
 	
-	page(pageNo,event) {
-		
-		// 禁用
-		// if (/disabled/
-		// .test(event.target.parentNode.className))
-		// return;
+	handlePage(pageNo,event) {
 
 		this.setState({pageNo:pageNo});
 
@@ -112,10 +148,6 @@ export default class Pager extends React.Component {
 		
 		if(onPage && typeof onPage =='function')
 			onPage.call(this,pageNo,this.state.pageSize,event);
-		
-		// this.$dispatch('page', page);
-
-		// this.pageChange.call(this, event,page);
 	}
 	
     render() {
@@ -135,15 +167,28 @@ export default class Pager extends React.Component {
     	var startRecord=this.getStartRecord();
     	var endRecord=this.getEndRecord();
 
-    	var firstCls=pageNo==1 ? "first disabled" : "first";
-    	var prevCls=pageNo==1 ? "prev disabled" : "prev";
-    	
-    	var lastCls=pageNo==totalPages ? "last disabled" : "last";
-    	var nextCls=pageNo==totalPages ? "next disabled" : "next";
-    
     	var items=[];
+    	
+    	//first
+    	items.push({text:"<<",cls:pageNo==1 ? "first disabled" : "first",key:"first",pageNo:1});
+    	
+    	//prev
+    	items.push({text:"<",cls:pageNo==1 ? "prev disabled" : "prev",key:"prev",pageNo:pageNo-1});
+    	
     	for(var index=startPage;index<=endPage;index++)
-			items.push(<li key={index} className={index==pageNo ? "page active" : "page"}><a href="javascript:void(0);" onClick={this.page.bind(this,index)}>{index}</a></li>);
+    		items.push({cls:index==pageNo ? "page active" : "page",pageNo:index,key:index});
+   
+    	//next
+    	items.push({text:">>",cls:pageNo==totalPages ? "next disabled" : "next",key:"next",pageNo:pageNo+1});
+    	
+    	//last
+    	items.push({text:">",cls:pageNo==totalPages ? "last disabled" : "last",key:"last",pageNo:totalPages});
+    	
+    	var itemNodes = items.map(function(item) {
+            return (
+            		<PagerItem key={item.key} cls={item.cls} onPage={this.handlePage} pageNo={item.pageNo} text={item.text}></PagerItem>
+            );
+        },this);
     	
         return (
 
@@ -151,22 +196,8 @@ export default class Pager extends React.Component {
         		<div className="pull-left pagination-summary">
         			第 {startRecord}到 {endRecord} 条，共 {totalRecords} 条记录
         		</div>
-        		<ul className="pull-right pagination">
-        			<li className={firstCls}>
-        				<a href="javascript:void(0);" onClick={this.page.bind(this,1)}>&lt;&lt;</a>
-        			</li>
-        			<li className={prevCls}>
-        				<a href="javascript:void(0);" onClick={this.page.bind(this,pageNo-1)}>&lt;</a>
-        			</li>
-        			
-        			{items}
-        			
-        			<li className={nextCls}>
-        				<a href="javascript:void(0);" onClick={this.page.bind(this,pageNo+1)}>&gt;</a>
-        			</li>
-        			<li className={lastCls}>
-        				<a href="javascript:void(0);" onClick={this.page.bind(this,totalPages)}>&gt;&gt;</a>
-        			</li>
+        		<ul className="pull-right pagination">	
+        			{itemNodes}
         		</ul>
         	</div>
        	);
