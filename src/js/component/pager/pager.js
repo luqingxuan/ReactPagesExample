@@ -1,6 +1,6 @@
 import React from 'react';
 
-require('./Pager.less');
+require('./pager.less');
 
 class PagerItem extends React.Component{
 	
