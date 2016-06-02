@@ -20,6 +20,7 @@ new webpack.ProvidePlugin({
 	jQuery : "jquery",
 	"window.jQuery" : "jquery",
 	moment : "moment",
+	React : "react",
 }),
 // CSS文件放置在CSS目录
 new ExtractTextPlugin("./css/[name].css") ];
@@ -74,13 +75,13 @@ var pageEntrys = function(entrys) {
 
 	var src = new RegExp(__dirname.replace(/\\/g, "/") + "/src/js/pages/");
 
-	glob.sync(__dirname + '/src/js/pages/**/*.js').forEach(function(name) {
+	glob.sync(__dirname + '/src/js/pages/**/*.jsx').forEach(function(name) {
 
 		// 前缀
 		var entry = name.replace(src, "");
 
 		// 后缀
-		entry = entry.replace(/\.js$/, "");
+		entry = entry.replace(/\.jsx$/, "");
 
 		entrys[entry] = [ name ];
 
@@ -110,6 +111,10 @@ var loaders = [
 				compact : false
 			},
 			exclude : /node_modules/
+		},
+		{
+			test : /\.jsx?$/,
+			loaders : [ 'jsx?harmony' ]
 		},
 		{
 			test : /\.json$/,
@@ -200,7 +205,7 @@ module.exports = {
 		root : [ path.join(__dirname, 'src'),
 				path.join(__dirname, 'node_modules') ],
 		// 自动扩展文件后缀名，意味着我们require模块可以省略不写后缀名
-		extensions : [ '', '.js', '.json', '.scss' ],
+		extensions : [ '', '.js', 'jsx', '.json', '.scss' ],
 		// 模块别名定义，方便后续直接引用别名，无须多写长长的地址
 		alias : {}
 	},
