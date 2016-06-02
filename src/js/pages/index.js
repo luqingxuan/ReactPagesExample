@@ -1,6 +1,6 @@
-var React = require('react');
+import React from 'react';
 
-var ReactDom = require('react-dom');
+import ReactDOM from 'react-dom';
 
 require('../../css/pages/index.css');
 
@@ -12,4 +12,4 @@ class Hello extends React.Component {
   }
 }
 
-ReactDom.render(<Hello name="Wrold" />, document.getElementById("react_target"));
+ReactDOM.render(<Hello name="Wrold" />, document.getElementById("react_target"));

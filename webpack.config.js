@@ -21,6 +21,7 @@ new webpack.ProvidePlugin({
 	"window.jQuery" : "jquery",
 	moment : "moment",
 	React : "react",
+	ReactDOM : "react-dom"
 }),
 // CSS文件放置在CSS目录
 new ExtractTextPlugin("./css/[name].css") ];
@@ -75,13 +76,13 @@ var pageEntrys = function(entrys) {
 
 	var src = new RegExp(__dirname.replace(/\\/g, "/") + "/src/js/pages/");
 
-	glob.sync(__dirname + '/src/js/pages/**/*.jsx').forEach(function(name) {
+	glob.sync(__dirname + '/src/js/pages/**/*.js').forEach(function(name) {
 
 		// 前缀
 		var entry = name.replace(src, "");
 
 		// 后缀
-		entry = entry.replace(/\.jsx$/, "");
+		entry = entry.replace(/\.js$/, "");
 
 		entrys[entry] = [ name ];
 
@@ -105,16 +106,12 @@ var entrys = function() {
 
 var loaders = [
 		{
-			test : /\.js$/,
+			test : /\.js?$/,
 			loader : 'babel',
 			query : {
-				compact : false
+				presets : [ 'es2015', 'react' ]
 			},
 			exclude : /node_modules/
-		},
-		{
-			test : /\.jsx?$/,
-			loaders : [ 'jsx?harmony' ]
 		},
 		{
 			test : /\.json$/,
