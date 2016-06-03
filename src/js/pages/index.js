@@ -12,6 +12,4 @@ class Hello extends React.Component {
   }
 }
 
-alert(Object.assign);
-
 ReactDOM.render(<Hello name="hello world" />, document.getElementById("react_target"));
