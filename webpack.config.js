@@ -108,10 +108,7 @@ var entrys = function() {
 var loaders = [
 		{
 			test : /\.js?$/,
-			loader : 'babel',
-			query : {
-				presets : [ 'es2015', 'react' ]
-			},
+			loaders : [ 'es3ify', 'babel?presets[]=es2015,presets[]=react' ],
 			exclude : /node_modules/
 		},
 		{
