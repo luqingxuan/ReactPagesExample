@@ -7,9 +7,11 @@ require('../../css/pages/index.css');
 class Hello extends React.Component {
   render() {
     return (
-      <h1>Hello {this.props.name}!</h1>
+      <h1>{this.props.name}!</h1>
     );
   }
 }
 
-ReactDOM.render(<Hello name="Wrold" />, document.getElementById("react_target"));
+alert(Object.assign);
+
+ReactDOM.render(<Hello name="hello world" />, document.getElementById("react_target"));
