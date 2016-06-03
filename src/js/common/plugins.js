@@ -4,8 +4,8 @@ require('../../css/lib/hover.css');
 
 require('font-awesome-webpack!../../../font-awesome.config.js');
 
-// 本地存储插件
-require('../lib/jquery/jquery.storage.js');
+//本地存储插件
+require('jstorage');
 
 // cookie
 require("js-cookie");
