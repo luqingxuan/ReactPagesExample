@@ -305,7 +305,7 @@ gulp.task("webpack-dev-minify", function(callback) {
 
 });
 
-// 正式发布文件
+// 正式发布压缩文件
 gulp.task("build", function(callback) {
 
 	gulpSequence('clean', 'oldie', 'html-include', 'webpack-build', 'md5',
