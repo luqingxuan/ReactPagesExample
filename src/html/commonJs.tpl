@@ -2,9 +2,9 @@
 <script type="text/javascript" src="/assets/js/jquery.js"></script>
 <!-- 日期处理依赖 -->
 <script type="text/javascript" src="/assets/js/moment.js"></script>
-<!-- React依赖 -->
+<!-- React核心依赖 -->
 <script type="text/javascript" src="/assets/js/react.js"></script>
-<!-- React Router/Redux/Flux等依赖 -->
+<!-- React生态router/redux/flux等依赖 -->
 <script type="text/javascript" src="/assets/js/react-extra.js"></script>
 <!-- Bootstrap依赖 -->
 <script type="text/javascript" src="/assets/js/bootstrap.js"></script>
