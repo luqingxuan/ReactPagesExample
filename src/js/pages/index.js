@@ -2,7 +2,7 @@ import React from 'react';
 
 import ReactDOM from 'react-dom';
 
-require('../../css/pages/index.css');
+require('css/pages/index.css');
 
 class Hello extends React.Component {
   render() {
