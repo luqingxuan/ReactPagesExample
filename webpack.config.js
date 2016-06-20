@@ -22,7 +22,8 @@ new webpack.ProvidePlugin({
 	"Cookies" : "js-cookie",
 	moment : "moment",
 	React : "react",
-	ReactDOM : "react-dom"
+	ReactDOM : "react-dom",
+	ReactRouter : "react-router"
 }),
 // CSS文件放置在CSS目录
 new ExtractTextPlugin("./css/[name].css") ];
@@ -38,10 +39,13 @@ var globalEntrys = function(entrys) {
 
 	entrys['react'] = [ 'react', 'react-dom' ];
 
+	entrys['react-extra'] = [ 'react-router', 'redux', 'react-redux',
+			'redux-react-router' ];
+
 	entrys['bootstrap'] = [ 'bootstrap-webpack!./bootstrap.config.js' ];
 
-	plugins.push(new CommonsChunkPlugin({// 注意顺序
-		name : [ 'react', 'bootstrap', 'moment', 'jquery' ],
+	plugins.push(new CommonsChunkPlugin({// 注意顺序,被依赖的要放到数组后边
+		name : [ 'react-extra', 'react', 'bootstrap', 'moment', 'jquery' ],
 		minChunks : Infinity
 	}));
 
