@@ -22,8 +22,7 @@ new webpack.ProvidePlugin({
 	"Cookies" : "js-cookie",
 	moment : "moment",
 	React : "react",
-	ReactDOM : "react-dom",
-	ReactRouter : "react-router"
+	ReactDOM : "react-dom"
 }),
 // CSS文件放置在CSS目录
 new ExtractTextPlugin("./css/[name].css") ];
