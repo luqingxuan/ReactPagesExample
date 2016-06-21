@@ -2,12 +2,12 @@
 <script type="text/javascript" src="/assets/js/jquery.js"></script>
 <!-- 日期处理依赖 -->
 <script type="text/javascript" src="/assets/js/moment.js"></script>
+<!-- Bootstrap依赖 -->
+<script type="text/javascript" src="/assets/js/bootstrap.js"></script>
 <!-- React核心依赖 -->
 <script type="text/javascript" src="/assets/js/react.js"></script>
 <!-- React生态router/redux/flux等依赖 -->
-<script type="text/javascript" src="/assets/js/react-extra.js"></script>
-<!-- Bootstrap依赖 -->
-<script type="text/javascript" src="/assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="/assets/js/react-vendors.js"></script>
 <!-- 其他通用插件依赖 -->
 <script type="text/javascript" src="/assets/js/plugins.js"></script>
 <!-- 项目需要依赖 -->
