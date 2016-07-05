@@ -19,10 +19,7 @@ new webpack.ProvidePlugin({
 	$ : "jquery",
 	jQuery : "jquery",
 	"window.jQuery" : "jquery",
-	Cookie : "js-cookie",
 	moment : "moment",
-	Moment : "moment",
-	Accounting : "accounting",
 	React : "react",
 	ReactDOM : "react-dom"
 }),
@@ -40,13 +37,13 @@ var globalEntrys = function(entrys) {
 
 	entrys['react'] = [ 'react', 'react-dom' ];
 
-	entrys['react-vendors'] = [ 'react-router', 'redux', 'react-redux',
+	entrys['react-platform'] = [ 'react-router', 'redux', 'react-redux',
 			'redux-react-router' ];
 
 	entrys['bootstrap'] = [ 'bootstrap-webpack!./bootstrap.config.js' ];
 
 	plugins.push(new CommonsChunkPlugin({// 注意顺序,被依赖的要放到数组后边
-		name : [ 'react-vendors', 'react', 'bootstrap', 'moment', 'jquery' ],
+		name : [ 'react-platform', 'react', 'bootstrap', 'moment', 'jquery' ],
 		minChunks : Infinity
 	}));
 

@@ -7,7 +7,7 @@
 <!-- React核心依赖 -->
 <script type="text/javascript" src="/assets/js/react.js"></script>
 <!-- React生态router/redux/flux等依赖 -->
-<script type="text/javascript" src="/assets/js/react-vendors.js"></script>
+<script type="text/javascript" src="/assets/js/react-platform.js"></script>
 <!-- 其他通用插件依赖 -->
 <script type="text/javascript" src="/assets/js/plugins.js"></script>
 <!-- 项目需要依赖 -->
