@@ -40,10 +40,8 @@ var globalEntrys = function(entrys) {
 	entrys['react-platform'] = [ 'react-router', 'redux', 'react-redux',
 			'redux-react-router' ];
 
-	entrys['bootstrap'] = [ 'bootstrap-webpack!./bootstrap.config.js' ];
-
 	plugins.push(new CommonsChunkPlugin({// 注意顺序,被依赖的要放到数组后边
-		name : [ 'react-platform', 'react', 'bootstrap', 'moment', 'jquery' ],
+		name : [ 'react-platform', 'react', 'moment', 'jquery' ],
 		minChunks : Infinity
 	}));
 
