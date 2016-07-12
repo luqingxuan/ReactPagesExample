@@ -1,14 +1,33 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 require('css/pages/index.css');
 
-class Hello extends React.Component {
+import {Router,Route,Link,IndexLink,IndexRoute,hashHistory} from 'react-router';
+
+class Index extends React.Component {
   render() {
     return (
-      <h1>{this.props.name}!</h1>
+    <div>
+      <h1>hello index!</h1>
+      <Link to='/about'>About</Link>
+    </div>
     );
   }
-}
+};
 
-ReactDOM.render(<Hello name="hello world" />, document.getElementById("react_target"));
+var About=React.createClass({
+	  render() {
+	    return (
+	    <div>
+	      <h1>hello about!</h1>
+	      <Link to='/index'>Index</Link>
+	    </div>
+	    );
+	  }
+	});
+
+ReactDOM.render(
+		<Router history={hashHistory}>
+			<Route path='/' component={Index}/>
+				<IndexRoute component={Index}/>
+				<Route path='/index' component={Index}/>
+				<Route path='/about' component={About}/>
+		</Router>, document.getElementById('app'));
