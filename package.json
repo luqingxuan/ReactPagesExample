@@ -89,6 +89,7 @@
     "xss": "^0.2.13"
   },
   "dependencies": {
+    "extend": "^3.0.0",
     "redux-react-router": "^1.0.0-beta3"
   }
 }
