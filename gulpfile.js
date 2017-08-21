@@ -1,5 +1,14 @@
-require('./gulpfile-tasks.js');
-require('./gulpfile-release.js');
+require('./gulpfile.tasks.js');
+
+require('./gulpfile.prod.js');
+
+const env = require('./env.json').development;
+
+// 域名
+const webServerDomain = env.domain;
+
+// 端口
+const webServerPort = env.port;
 
 const extend = require('extend');
 
@@ -13,81 +22,37 @@ const webpack = require('webpack');
 
 const WebpackDevServer = require('webpack-dev-server');
 
-const webpackDevelopConfig = require('./webpack.config.js');
-
-// 域名
-const webServerDomain = 'localhost';
-
-// 端口
-const webServerPort = 7070;
-
-// 代理端口
-const webServerProxyPort = 7777;
+const WebpackDevConfig = extend(true, {}, require('./webpack.config.js'));
 
 const uglifyJsPlugin = new webpack.optimize.UglifyJsPlugin({
     mangle: {
+        screw_ie8: false,
+        // 排除关键字
         except: ['$super', '$', 'exwebServerPorts', 'require']
-            // 排除关键字
+
     },
     comments: false,
     compress: {
-        // screw_ie8: true,//IE8
+        properties: false,
         warnings: false
-    }
-});
-
-// 负责监听HTML变化,并刷新浏览器
-const browserSyncPlugin = function() {
-    this.plugin('done', function() {
-        gulp.start('browser-sync');
-    });
-};
-
-// 监听HTML页面变化
-gulp.task('browser-sync', function(callback) {
-    browserSync({
-        proxy: webServerDomain + ':' + webServerPort,
-        port: webServerProxyPort,
-        files: ['dist/**/*.html'],
-        open: true,
-        notify: true,
-        reloadDelay: 500, // 延迟刷新
-    });
+    },
+    output: {
+        beautify: true,
+        quote_keys: true
+    },
+    sourceMap: false
 });
 
 // 开发调试源码环境
 gulp.task('webpack-dev', function(callback) {
-    var webpackConfig = extend(true, {}, webpackDevelopConfig);
-
-    // 启动browser-sync
-    webpackConfig.plugins.push(browserSyncPlugin);
-
-    var cfg = {
-        inline: true,
+    var devServer = extend(true, {}, WebpackDevConfig.devServer, {
         hot: true,
-        historyApiFallback: false,
-        contentBase: webpackConfig.devServer.contentBase,
-        publicPath: webpackConfig.output.publicPath,
-        // Set this if you want to enable gzip compression for assets
-        compress: true,
-        // webpack-dev-middleware options
-        // quiet: false,
-        // noInfo: false,
-        lazy: false,
-        stats: {
-            colors: true
-        },
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type'
-        },
-        proxy: webpackConfig.devServer.proxy
-    };
+        inline: true
+    });
 
-    var compiler = webpack(webpackConfig);
+    var compiler = webpack(WebpackDevConfig);
 
-    var server = new WebpackDevServer(compiler, cfg);
+    var server = new WebpackDevServer(compiler, devServer);
 
     server.listen(webServerPort, webServerDomain, function(err) {
         console.log('start at ' + webServerDomain + ':' + webServerPort);
@@ -97,40 +62,17 @@ gulp.task('webpack-dev', function(callback) {
 });
 
 gulp.task('webpack-dev-minify', function(callback) {
-    var webpackConfig = extend(true, {}, webpackDevelopConfig);
-
-    var cfg = {
-        inline: true,
+    var devServer = extend(true, {}, WebpackDevConfig.devServer, {
         hot: true,
-        historyApiFallback: false,
-        contentBase: webpackConfig.devServer.contentBase,
-        publicPath: webpackConfig.output.publicPath,
-        // Set this if you want to enable gzip compression for assets
-        compress: true,
-        // webpack-dev-middleware options
-        // quiet: false,
-        // noInfo: false,
-        lazy: false,
-        stats: {
-            colors: true
-        },
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type'
-        },
-        proxy: webpackConfig.devServer.proxy
-    };
+        inline: true
+    });
 
     // uglify js file
-    webpackConfig.plugins.push(uglifyJsPlugin);
+    WebpackDevConfig.plugins.push(uglifyJsPlugin);
 
-    // 启动browser-sync
-    webpackConfig.plugins.push(browserSyncPlugin);
+    var compiler = webpack(WebpackDevConfig);
 
-    var compiler = webpack(webpackConfig);
-
-    var server = new WebpackDevServer(compiler, cfg);
+    var server = new WebpackDevServer(compiler, devServer);
 
     server.listen(webServerPort, webServerDomain, function(err) {
         console.log('start at ' + webServerDomain + ':' + webServerPort);
@@ -141,20 +83,22 @@ gulp.task('webpack-dev-minify', function(callback) {
 
 // 开发源码调试环境
 gulp.task('dev', function(callback) {
-    gulpSequence('clean', 'shim', 'html-images', 'html-include', 'webpack-dev',
+    gulpSequence('clean', 'externals', 'shim', 'html-images', 'html-include', 'webpack-dev',
         callback);
 
     // 监听HTML文件变化
+    gulp.watch(['./src/js/externals/**/*.*'], ['externals']);
     gulp.watch(['./src/html/**/*.*'], ['html-include']);
     gulp.watch(['./src/images/**/*.*'], ['html-images']);
 });
 
 // 开发压缩调试环境
 gulp.task('dev-minify', function(callback) {
-    gulpSequence('clean', 'shim', 'html-images', 'html-include',
+    gulpSequence('clean', 'externals', 'shim', 'html-images', 'html-include',
         'webpack-dev-minify', callback);
 
     // 监听HTML文件变化
+    gulp.watch(['./src/js/externals/**/*.*'], ['externals']);
     gulp.watch(['./src/html/**/*.*'], ['html-include']);
     gulp.watch(['./src/images/**/*.*'], ['html-images']);
 });

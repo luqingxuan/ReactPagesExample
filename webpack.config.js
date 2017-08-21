@@ -1,46 +1,34 @@
-const webpack = require('webpack');
+const developmentEnv = require('./env.json').development;
+
+// 域名
+const webServerDomain = developmentEnv.domain;
+
+// 端口
+const webServerPort = developmentEnv.port;
+
+// 后台API服务器
+const apiServer = developmentEnv.apiServer;
 
 const extend = require('extend');
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
 
-// 域名
-const webServerDomain = 'localhost';
-
-// 端口
-const webServerPort = 7070;
-
-// API服务器
-const developApiServer = ''
-
-const defaults = require('./webpack.common.config.js');
-const config = extend(true, {}, defaults);
+const config = extend(true, {}, require('./webpack.common.config.js'));
 
 config.module = config.module || {};
-config.module.loaders = config.module.loaders || [];
+config.module.rules = config.module.rules || [];
+
+config.module.rules.push({
+    test: /\.jsx?$/,
+    exclude: /node_modules/,
+    use: ['babel-loader']
+});
 
 config.plugins = config.plugins || [];
 
-// vue global
-config.plugins.unshift(
-    new webpack.ProvidePlugin({
-        React: 'react',
-        ReactDOM: 'react-dom',
-        ReactRouter: 'react-router'
-    })
-);
-
-// inject env
-config.plugins.push(
-    new webpack.DefinePlugin({
-        'process.env': {
-            'NODE_ENV': JSON.stringify('develop'),
-            'API_SERVER': JSON.stringify(developApiServer)
-        }
-    })
-);
-
-// hot reload
+// webpack-dev-server enhancement plugins
+config.plugins.push(new(require('webpack-dashboard/plugin'))());
+config.plugins.push(new webpack.NamedModulesPlugin());
 config.plugins.push(new webpack.HotModuleReplacementPlugin());
 
 for (var key in config.entry) {
@@ -50,17 +38,28 @@ for (var key in config.entry) {
     if (!(config.entry[key] instanceof Array))
         config.entry[key] = [config.entry[key]];
 
-    config.entry[key].unshift('webpack/hot/dev-server');
-    config.entry[key].unshift(require.resolve('webpack-dev-server/client/') + '?' + 'http://' + webServerDomain + ':' + webServerPort);
+    // bundle the client for hot reloading, only- means to only hot reload for successful updates
+    config.entry[key].unshift('webpack/hot/only-dev-server');
+
+    // bundle the client for webpack-dev-server, and connect to the provided endpoint
+    config.entry[key].unshift('webpack-dev-server/client/?http://' + webServerDomain + ':' + webServerPort);
+
+    // activate HMR for React
+    config.entry[key].unshift('react-hot-loader/patch');
 }
 
+// inject env
+config.plugins.push(
+    new webpack.DefinePlugin({
+        'process.env': {
+            'NODE_ENV': JSON.stringify('development'),
+            'API_SERVER': JSON.stringify(apiServer)
+        }
+    })
+);
+
 // api proxy for develop
-config.devServer.proxy = {
-    '/v1/*': {
-        target: 'http://localhost:10002/',
-        secure: false
-    }
-};
+config.devServer.proxy = developmentEnv.apiProxy;
 
 config.devtool = 'source-map';
 
