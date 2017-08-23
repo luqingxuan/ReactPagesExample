@@ -1,16 +1,20 @@
 require('css/pages/index.css');
 
-import { AppContainer } from 'react-hot-loader';
-
 import App from 'modules/App.jsx';
 
-const Render = Component =>
-  ReactDOM.render(
-    <AppContainer>
-      <Component />
-    </AppContainer>,
-    document.getElementById('app')
-  );
+import HotLoadSupport from 'containers/HotLoadSupport.jsx';
+import ReduxSupport from 'containers/ReduxSupport.jsx';
+
+const Render = Component => {
+    ReactDOM.render(
+        <HotLoadSupport>
+            <ReduxSupport>
+                <Component />
+            </ReduxSupport>
+        </HotLoadSupport>,
+        document.getElementById('app')
+     );
+}
 
 Render(App);
 

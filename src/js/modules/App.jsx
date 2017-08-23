@@ -1,25 +1,44 @@
-var Index = () => {
-    return (
-        <div>
-          <h1>hello Go!</h1>
+import { TestRoutes } from 'router/index.jsx';
 
-        </div>
-    );
-};
+import { TestActionCreator } from 'store/actionCreators/index.js';
 
-var About = () => {
-        return (
-            <div>
-              <h1>hello about!</h1>
-              <Link to='/index'>Index</Link>
-            </div>
-        );
-    };
+const { connect } = ReactRedux;
 
-export default class App extends React.Component{
+const {
+  BrowserRouter,
+  Link,
+} = ReactRouterDOM;
+
+class App extends React.Component{
     render() {
+        let { counter, onCounterIncrement } = this.props;
         return (
-            <h2>hello -- world</h2>
+            <BrowserRouter>
+                <div>
+                    <h2 onClick={e => onCounterIncrement(2)}>{counter}</h2>
+                    <ul>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/about">About</Link></li>
+                    </ul>
+                    { TestRoutes}
+                </div>
+            </BrowserRouter>
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {
+        counter: state.test.counter
+    };
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+    return {
+        onCounterIncrement: (payload) => {
+            dispatch(TestActionCreator.increment(4));
+        }
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

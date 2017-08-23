@@ -1,18 +1,22 @@
 require('css/pages/goods/index.css');
 
-import { AppContainer } from 'react-hot-loader';
-
 import App from 'modules/App.jsx';
 
-const Render = Component =>
-  ReactDOM.render(
-    <AppContainer>
-      <Component />
-    </AppContainer>,
-    document.getElementById('app')
-  );
+import HotLoadSupport from 'containers/HotLoadSupport.jsx';
+import ReduxSupport from 'containers/ReduxSupport.jsx';
+
+const Render = Component => {
+    ReactDOM.render(
+        <HotLoadSupport>
+            <ReduxSupport>
+                <Component />
+            </ReduxSupport>
+        </HotLoadSupport>,
+        document.getElementById('app')
+     );
+}
 
 Render(App);
 
-if (process.env == 'development' && module.hot)
+if (process.env.NODE_ENV == 'development' && module.hot)
     module.hot.accept('modules/App.jsx', () => Render(App));
