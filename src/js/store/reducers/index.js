@@ -1,7 +1,7 @@
-import TestReducer from './test.js';
-import MoneyReducer from './money.js';
+import test from './test.js';
+import money from './money.js';
 
-export {
-    TestReducer,
-    MoneyReducer
+export default {
+    test,
+    money
 };

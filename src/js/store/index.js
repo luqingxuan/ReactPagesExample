@@ -4,10 +4,7 @@ import {
     TestSaga
 } from './sagas/index.js';
 
-import {
-    TestReducer,
-    MoneyReducer
-} from './reducers/index.js';
+import Reducers from './reducers/index.js';
 
 const {
     createStore,
@@ -30,8 +27,7 @@ const middleware = [reactRouterMiddleware, ReduxThunk.default, ReduxPromise, sag
 
 const store = createStore(
     combineReducers({
-        test: TestReducer,
-        money: MoneyReducer,
+        ...Reducers,
         router: routerReducer
     }),
     applyMiddleware(...middleware)
