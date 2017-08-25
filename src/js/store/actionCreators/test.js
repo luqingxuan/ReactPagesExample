@@ -7,7 +7,7 @@ import {
 }
 from 'store/actionConstants/index.js';
 
-const actions = createActions({
+export default createActions({
     [TestActionConstant.INCREMENT]: (delta) => {
         return {
             delta: delta
@@ -19,5 +19,3 @@ const actions = createActions({
         }
     }
 });
-
-export default actions;

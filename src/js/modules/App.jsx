@@ -4,6 +4,8 @@ import { TestActionCreator } from 'store/actionCreators/index.js';
 
 const { connect } = ReactRedux;
 
+const { withRouter } = ReactRouter;
+
 const {
   BrowserRouter,
   Link,
@@ -13,16 +15,14 @@ class App extends React.Component{
     render() {
         let { counter, onCounterIncrement } = this.props;
         return (
-            <BrowserRouter>
-                <div>
-                    <h2 onClick={e => onCounterIncrement(2)}>{counter}</h2>
-                    <ul>
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/about">About</Link></li>
-                    </ul>
-                    { TestRoutes}
-                </div>
-            </BrowserRouter>
+            <div>
+                <h2 onClick={e => onCounterIncrement(2)}>{counter}</h2>
+                <ul>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/about">About</Link></li>
+                </ul>
+                { TestRoutes}
+            </div>
         );
     }
 }
@@ -41,4 +41,4 @@ function mapDispatchToProps(dispatch, ownProps) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
