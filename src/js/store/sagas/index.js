@@ -1,5 +1,5 @@
 import TestSaga from './test.js';
 
-export {
-    TestSaga
-};
+export function runSaga(sagaMiddleware) {
+    sagaMiddleware.run(TestSaga);
+}

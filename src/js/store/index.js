@@ -1,7 +1,7 @@
 import createHistory from 'history/createBrowserHistory';
 
 import {
-    TestSaga
+    runSaga
 } from './sagas/index.js';
 
 import Reducers from './reducers/index.js';
@@ -33,6 +33,6 @@ const store = createStore(
     applyMiddleware(...middleware)
 );
 
-sagaMiddleware.run(TestSaga);
+runSaga(sagaMiddleware);
 
 export default store;
