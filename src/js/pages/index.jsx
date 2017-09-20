@@ -23,4 +23,4 @@ const Render = Component => {
 Render(App);
 
 if (process.env.NODE_ENV == 'development' && module.hot)
-    module.hot.accept('c.jsx', () => Render(App));
+    module.hot.accept('modules/App.jsx', () => Render(App));

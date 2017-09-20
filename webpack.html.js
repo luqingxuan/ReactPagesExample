@@ -38,7 +38,7 @@ function make(commonEntries, pageEntries) {
 
         extend(false, options, defaults, {
             chunks: chunks,
-            filename: '/' + page.id + '.html',
+            filename: page.id + '.html',
             template: './src/html/pages/' + page.id + '.ejs'
         });
 
