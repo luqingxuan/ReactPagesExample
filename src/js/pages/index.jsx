@@ -21,3 +21,5 @@ const Render = Component => {
 }
 
 Render(App);
+
+if (module.hot) module.hot.accept('modules/App.jsx', () => Render(App));

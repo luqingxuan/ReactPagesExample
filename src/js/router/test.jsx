@@ -2,13 +2,13 @@ const { Route, Switch } = ReactRouterDOM;
 
 const Home = () => (
     <div>
-        <h2> Home </h2>
+        <h2> Home sb</h2>
     </div>
 );
 
 const About = () => (
     <div>
-        <h2> About </h2>
+        <h2> About sb </h2>
     </div>
 );
 

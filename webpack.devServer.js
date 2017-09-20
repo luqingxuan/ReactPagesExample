@@ -5,6 +5,8 @@ const Env = require('./env.json')[process.env.NODE_ENV];
 const IsProduct = process.env.NODE_ENV === 'production';
 
 const devServer = IsProduct ? {} : {
+    inline: true,
+    hot: true,
     host: Env.devHost,
     port: Env.devPort,
     publicPath: '/',
