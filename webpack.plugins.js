@@ -28,16 +28,16 @@ function make(commonEntries, pageEntries) {
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }));
 
+    // webpack-dev-server enhancement plugins
+    !IsProduct && plugins.push(new(require('webpack-dashboard/plugin'))());
+
+    // hot reload，据我所知，这个插件，一定要放在HashedModuleIdsPlugin NamedModulesPlugin前边
+    !IsProduct && plugins.push(new webpack.HotModuleReplacementPlugin());
+
     plugins.push.apply(plugins, require('./webpack.html.js')(commonEntries, pageEntries));
 
     // create module id
     plugins.push(new webpack[IsProduct ? 'HashedModuleIdsPlugin' : 'NamedModulesPlugin']());
-
-    // webpack-dev-server enhancement plugins
-    !IsProduct && plugins.push(new(require('webpack-dashboard/plugin'))());
-
-    // hot reload
-    !IsProduct && plugins.push(new webpack.HotModuleReplacementPlugin());
 
     // js file ugly
     IsProduct && plugins.push(new webpack.optimize.UglifyJsPlugin({
