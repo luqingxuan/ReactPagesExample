@@ -1,22 +1,10 @@
-const developmentEnv = require('./env.json').development;
+const Env = require('./env.json')[process.env.NODE_ENV];
 
-// 域名
-const webServerDomain = developmentEnv.domain;
-
-// 端口
-const webServerPort = developmentEnv.port;
-
-// 后台API服务器
-const apiServer = developmentEnv.apiServer;
-
-const extend = require('extend');
+const IsProduct = process.env.NODE_ENV === 'production';
 
 const webpack = require('webpack');
 
-const config = extend(true, {}, require('./webpack.common.config.js'));
-
-config.module = config.module || {};
-config.module.rules = config.module.rules || [];
+const config = require('./webpack.common.config.js');
 
 config.module.rules.push({
     test: /\.jsx?$/,
@@ -24,14 +12,12 @@ config.module.rules.push({
     use: ['babel-loader']
 });
 
-config.plugins = config.plugins || [];
+// inject env
+config.plugins.push(new webpack.DefinePlugin({
+    'process.env.API_SERVER': JSON.stringify(Env.apiServer)
+}));
 
-// webpack-dev-server enhancement plugins
-config.plugins.push(new(require('webpack-dashboard/plugin'))());
-config.plugins.push(new webpack.NamedModulesPlugin());
-config.plugins.push(new webpack.HotModuleReplacementPlugin());
-
-for (var key in config.entry) {
+for (var key in (IsProduct ? {} : config.entry)) {
     if (!config.entry.hasOwnProperty(key))
         continue;
 
@@ -42,25 +28,15 @@ for (var key in config.entry) {
     config.entry[key].unshift('webpack/hot/only-dev-server');
 
     // bundle the client for webpack-dev-server, and connect to the provided endpoint
-    config.entry[key].unshift('webpack-dev-server/client/?http://' + webServerDomain + ':' + webServerPort);
+    config.entry[key].unshift('webpack-dev-server/client/?http://' + Env.devHost + ':' + Env.devPort);
 
     // activate HMR for React
     config.entry[key].unshift('react-hot-loader/patch');
 }
 
-// inject env
-config.plugins.push(
-    new webpack.DefinePlugin({
-        'process.env': {
-            'NODE_ENV': JSON.stringify('development'),
-            'API_SERVER': JSON.stringify(apiServer)
-        }
-    })
-);
-
 // api proxy for develop
-config.devServer.proxy = developmentEnv.apiProxy;
+config.devServer.proxy = Env.devProxy;
 
-config.devtool = 'source-map';
+config.devtool = IsProduct ? 'cheap-module-source-map' : 'source-map';
 
 module.exports = config;

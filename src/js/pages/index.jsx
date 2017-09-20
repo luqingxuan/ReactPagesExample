@@ -5,6 +5,10 @@ import App from 'modules/App.jsx';
 import HotLoadSupport from 'containers/HotLoadSupport.jsx';
 import ReduxSupport from 'containers/ReduxSupport.jsx';
 
+require.ensure(['modules/test.js'], function(a) {
+    console.log(a);
+});
+
 const Render = Component => {
     ReactDOM.render(
         <HotLoadSupport>
@@ -19,4 +23,4 @@ const Render = Component => {
 Render(App);
 
 if (process.env.NODE_ENV == 'development' && module.hot)
-    module.hot.accept('modules/App.jsx', () => Render(App));
+    module.hot.accept('c.jsx', () => Render(App));
