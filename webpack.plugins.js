@@ -31,8 +31,10 @@ function make(commonEntries, pageEntries) {
     // webpack-dev-server enhancement plugins
     !IsProduct && plugins.push(new(require('webpack-dashboard/plugin'))());
 
-    // hot reload，据我所知，这个插件，一定要放在HashedModuleIdsPlugin NamedModulesPlugin前边
-    !IsProduct && plugins.push(new webpack.HotModuleReplacementPlugin());
+    // 按照官网说法，如果命令行添加了--hot命令，此处可以忽略
+    // 如果是通过Node.js API new WebpackDevServer创建，需要手动添加此插件
+    // 必须是二选一，不能同时配置
+    // !IsProduct && plugins.push(new webpack.HotModuleReplacementPlugin());
 
     // 避免发出包含错误的模块
     !IsProduct && plugins.push(new webpack.NoEmitOnErrorsPlugin());

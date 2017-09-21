@@ -5,6 +5,7 @@ const Env = require('./env.json')[process.env.NODE_ENV];
 const IsProduct = process.env.NODE_ENV === 'production';
 
 const devServer = IsProduct ? {} : {
+    // 通过命令行--inline或者此处配置都行
     inline: true,
     hot: true,
     host: Env.devHost,

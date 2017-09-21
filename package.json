@@ -7,7 +7,7 @@
         "html": "gulp html",
         "md5": "gulp md5",
         "start": "npm run dev",
-        "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline",
+        "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
         "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
     },
     "author": "",
