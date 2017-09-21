@@ -58,7 +58,7 @@ function make(commonEntries, pageEntries) {
             warnings: false
         },
         output: {
-            beautify: true,
+            beautify: false,
             quote_keys: true
         },
         sourceMap: false
