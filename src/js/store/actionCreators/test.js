@@ -1,6 +1,6 @@
-const {
+import {
     createActions
-} = ReduxActions;
+} from 'redux-actions';
 
 import {
     TestActionConstant

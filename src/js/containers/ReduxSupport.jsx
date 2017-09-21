@@ -1,8 +1,8 @@
 import store, { history } from'store/index.js';
 
-const { ConnectedRouter } = ReactRouterRedux;
+import { Provider } from 'react-redux';
 
-const { Provider } = ReactRedux;
+import  { ConnectedRouter } from 'react-router-redux';
 
 export default class ReduxSupport extends React.Component {
     render() {

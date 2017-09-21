@@ -1,15 +1,18 @@
+import React from 'react';
+
+import { connect } from 'react-redux';
+
+import { withRouter } from 'react-router';
+
+import {
+  BrowserRouter,
+  Link,
+} from 'react-router-dom';
+
 import { TestRoutes } from 'router/index.jsx';
 
 import { TestActionCreator } from 'store/actionCreators/index.js';
 
-const { connect } = ReactRedux;
-
-const { withRouter } = ReactRouter;
-
-const {
-  BrowserRouter,
-  Link,
-} = ReactRouterDOM;
 
 class App extends React.Component{
     render() {

@@ -57,15 +57,15 @@ reactEntries.push({
 reactEntries.push({
     id: 'react-platform',
     contains: [
-        'expose-loader?ReactRouter!react-router',
-        'expose-loader?ReactRouterDOM!react-router-dom',
-        'expose-loader?Redux!redux',
-        'expose-loader?ReactRedux!react-redux',
-        'expose-loader?ReactRouterRedux!react-router-redux',
-        'expose-loader?ReduxActions!redux-actions',
-        'expose-loader?ReduxThunk!redux-thunk',
-        'expose-loader?ReduxPromise!redux-promise',
-        'expose-loader?ReduxSaga!redux-saga'
+        'react-router',
+        'react-router-dom',
+        'redux',
+        'react-redux',
+        'react-router-redux',
+        'redux-actions',
+        'redux-thunk',
+        'redux-promise',
+        'redux-saga'
     ]
 });
 

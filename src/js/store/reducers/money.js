@@ -2,9 +2,9 @@ import {
     MoneyActionConstant
 } from 'store/actionConstants/index.js';
 
-const {
+import {
     handleActions
-} = ReduxActions;
+} from 'redux-actions';
 
 const defaultState = {
     counter: 0

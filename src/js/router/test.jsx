@@ -1,4 +1,4 @@
-const { Route, Switch } = ReactRouterDOM;
+import { Route, Switch } from 'react-router-dom';
 
 const Home = () => (
     <div>

@@ -1,5 +1,7 @@
 require('css/pages/ideas/index.css');
 
+import ReactDom from 'react-dom';
+
 import App from 'modules/App.jsx';
 
 import HotLoadSupport from 'containers/HotLoadSupport.jsx';
