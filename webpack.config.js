@@ -17,6 +17,7 @@ config.plugins.push(new webpack.DefinePlugin({
     'process.env.API_SERVER': JSON.stringify(Env.apiServer)
 }));
 
+// 注意: package.json commind line refuse --hot config
 for (var key in (IsProduct ? {} : config.entry)) {
     if (!config.entry.hasOwnProperty(key))
         continue;
