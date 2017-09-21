@@ -7,6 +7,7 @@ const IsProduct = process.env.NODE_ENV === 'production';
 const devServer = IsProduct ? {} : {
     // 通过命令行--inline或者此处配置都行
     inline: true,
+    // 通过Node.js API new WebpackDevServer方式才有用
     hot: true,
     host: Env.devHost,
     port: Env.devPort,
