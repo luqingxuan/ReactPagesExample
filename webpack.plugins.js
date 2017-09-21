@@ -34,6 +34,7 @@ function make(commonEntries, pageEntries) {
     // hot reload，据我所知，这个插件，一定要放在HashedModuleIdsPlugin NamedModulesPlugin前边
     !IsProduct && plugins.push(new webpack.HotModuleReplacementPlugin());
 
+    // 避免发出包含错误的模块
     !IsProduct && plugins.push(new webpack.NoEmitOnErrorsPlugin());
 
     plugins.push.apply(plugins, require('./webpack.html.js')(commonEntries, pageEntries));
