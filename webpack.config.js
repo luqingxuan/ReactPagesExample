@@ -8,8 +8,8 @@ const config = require('./webpack.common.config.js');
 
 config.module.rules.push({
     test: /\.jsx?$/,
-    exclude: /node_modules/,
-    use: ['babel-loader']
+    use: ['babel-loader'],
+    exclude: /node_modules/
 });
 
 // inject env
