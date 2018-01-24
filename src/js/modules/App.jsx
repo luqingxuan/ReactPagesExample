@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import {
-  BrowserRouter,
-  Link,
+    HashRouter,
+    Link,
 } from 'react-router-dom';
 
 import { TestRoutes } from 'router/index.jsx';
@@ -18,14 +18,16 @@ class App extends React.Component{
     render() {
         let { counter, onCounterIncrement } = this.props;
         return (
-            <div>
-                <h2 onClick={e => onCounterIncrement(2)}>{counter}</h2>
-                <ul>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/about">About</Link></li>
-                </ul>
-                { TestRoutes}
-            </div>
+            <HashRouter>
+                <div>
+                    <h2 onClick={e => onCounterIncrement(2)}>{counter}</h2>
+                    <ul>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/about">About</Link></li>
+                    </ul>
+                    { TestRoutes}
+                </div>
+            </HashRouter>
         );
     }
 }

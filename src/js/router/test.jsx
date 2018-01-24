@@ -2,13 +2,13 @@ import { Route, Switch } from 'react-router-dom';
 
 const Home = () => (
     <div>
-        <h2> Home sb</h2>
+        <h2 style={{color: "red"}}> Home hello</h2>
     </div>
 );
 
 const About = () => (
     <div>
-        <h2> About sb </h2>
+        <h2 style={{color: "red"}}> About world </h2>
     </div>
 );
 
